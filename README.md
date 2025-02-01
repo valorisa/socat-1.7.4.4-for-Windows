@@ -37,32 +37,25 @@ First of all, if it is not done yet, download and install Cygwin (last version) 
 ## 1. **Install additional Cygwin packages**
 
 – gcc-g++
-
 – gcc-core
-
 – cygwin32-gcc-g++
-
 – cygwin32-gcc-core
-
 – make
-
 – gcc-fortran
-
 – gcc-objc
-
-– gcc-objc++
-
 – libkrb5-devel
-
 – libkrb5_3
-
 – libreadline-devel
-
 – libssl-devel
-
 – libwrap-devel
-
 – tcp_wrappers
+
+gcc-core: For C compilation.
+make: To manage build scripts.
+automake: To generate configuration files.
+autoconf: To configure sources.
+libtool: For managing shared libraries.
+openssl-devel: For SSL/TLS support.
 
 To do this, let us try to answer the following question : How to do install packages on Cygwin ?
 Download the Cygwin installer and run setup.exe. Click Next through the defaults and select mirror for downloading packages. Search for each package, open the appropriate category (by example Net or PHP or other), and click Skip next to each package to select it for installation.
