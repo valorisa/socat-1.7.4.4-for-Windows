@@ -34,127 +34,125 @@ You can download it by going to : [socat-1.8.0.1.7z](https://github.com/valorisa
 
 First of all, if it is not done yet, download and install Cygwin (last version) : <https://www.cygwin.com/setup-x86_64.exe>
 
-## 1. **Install additional Cygwin packages**
+### **Pourquoi compiler `socat` à partir de Cygwin ?**
+- Tu peux obtenir la dernière version de `socat` (si elle n'est pas disponible dans les paquets Cygwin).
+- Tu peux personnaliser la compilation (par exemple, activer ou désactiver des fonctionnalités).
+- C'est une excellente façon d'apprendre comment compiler des programmes sous Windows avec des outils Unix.
 
-– gcc-g++
-– gcc-core
-– cygwin32-gcc-g++
-– cygwin32-gcc-core
-– make
-– gcc-fortran
-– gcc-objc
-– libkrb5-devel
-– libkrb5_3
-– libreadline-devel
-– libssl-devel
-– libwrap-devel
-– tcp_wrappers
+---
 
-gcc-core: For C compilation.
-make: To manage build scripts.
-automake: To generate configuration files.
-autoconf: To configure sources.
-libtool: For managing shared libraries.
-openssl-devel: For SSL/TLS support.
+### **Étape 1 : Installer les outils de compilation dans Cygwin**
 
-To do this, let us try to answer the following question : How to do install packages on Cygwin ?
-Download the Cygwin installer and run setup.exe. Click Next through the defaults and select mirror for downloading packages. Search for each package, open the appropriate category (by example Net or PHP or other), and click Skip next to each package to select it for installation.
+Pour compiler `socat`, tu as besoin des outils de développement comme `gcc`, `make`, et d'autres dépendances. Suis ces étapes pour les installer :
 
-## 2. **From Cygwin 3.5.7**
+1. **Ouvre Cygwin** :
+   - Lance Cygwin depuis le menu Démarrer ou en double-cliquant sur l'icône du bureau.
 
-Please, don't forget to download socat source from <http://www.dest-unreach.org/socat/>
+2. **Installe les paquets nécessaires** :
+   - Dans la fenêtre Cygwin, tape la commande suivante pour installer les outils de compilation :
+     ```bash
+     apt-cyg install gcc-core make automake autoconf libtool git
+     ```
+   - Si `apt-cyg` n'est pas installé, tu peux l'ajouter en suivant les instructions sur [apt-cyg](https://github.com/transcode-open/apt-cyg).
 
-Run **Cygwin** via (Windows + R, 'mintty') and execute the following commands :
+   - Ces paquets incluent :
+     - `gcc-core` : Le compilateur C.
+     - `make` : Un outil pour gérer la compilation.
+     - `automake`, `autoconf`, `libtool` : Des outils pour configurer le projet.
+     - `git` : Pour télécharger le code source de `socat`.
 
-```bash
-cd / && cd cygdrive/c/Users/<your_username>/Desktop [or cd / && cd %USERPROFILE%/Desktop if you use (Windows + R, 'cmd')]
+---
 
-wget http://www.dest-unreach.org/socat/download/socat-1.8.0.1.tar.gz
+### **Étape 2 : Télécharger le code source de `socat`**
 
-tar -xvzf socat-1.8.0.1.tar.gz
+1. **Clone le dépôt Git de `socat`** :
+   - Dans Cygwin, tape la commande suivante pour télécharger le code source :
+     ```bash
+     git clone http://repo.or.cz/socat.git
+     ```
+   - Cela va créer un dossier appelé `socat` dans ton répertoire actuel.
 
-cd socat-1.8.0.1
+2. **Va dans le dossier `socat`** :
+   ```bash
+   cd socat
+   ```
 
-./configure
+---
 
-make
+### **Étape 3 : Configurer et compiler `socat`**
 
-make install
-```
+1. **Génère les fichiers de configuration** :
+   - Si le projet utilise `autoconf` et `automake`, tu dois d'abord générer les fichiers de configuration. Tape :
+     ```bash
+     autoreconf -i
+     ```
 
-## 3. **From Windows Explorer**
+2. **Configure le projet** :
+   - Exécute le script `configure` pour préparer la compilation :
+     ```bash
+     ./configure
+     ```
+   - Cela vérifie que toutes les dépendances sont installées et configure le projet pour ton système.
 
-After compilation, copy _'socat-1.8.0.1'_ directory to %ProgramFiles% or an other location. You have to copy the directory totally and not only 'socat.exe', otherwise it won't work.
+3. **Compile `socat`** :
+   - Utilise `make` pour compiler le programme :
+     ```bash
+     make
+     ```
+   - Cela peut prendre quelques minutes, selon la puissance de ton ordinateur.
 
-Caution : Add the socat's path from environment variables, with (Windows + R, 'sysdm.cpl', advanced system settings). Close 'mintty' and reopen it.
+4. **Installe `socat` (optionnel)** :
+   - Si tu veux installer `socat` dans Cygwin pour pouvoir l'utiliser depuis n'importe où, tape :
+     ```bash
+     make install
+     ```
+   - Cela copiera le fichier `socat` dans le répertoire `/usr/local/bin` de Cygwin.
 
-Note (from 'mintty' [cygwin] to verify the version number) : 
-```bash
-$ socat -V
-socat by Gerhard Rieger and contributors - see www.dest-unreach.org
-socat version 1.8.0.1 on Aug 24 2024 21:18:20
-   running on CYGWIN_NT-10.0-26100 version 2024-04-03 17:25 UTC, release 3.5.3-1.x86_64, machine x86_64
-features:
-  #define WITH_HELP 1
-  #define WITH_STATS 1
-  #define WITH_STDIO 1
-  #define WITH_FDNUM 1
-  #define WITH_FILE 1
-  #define WITH_CREAT 1
-  #define WITH_GOPEN 1
-  #define WITH_TERMIOS 1
-  #define WITH_PIPE 1
-  #define WITH_SOCKETPAIR 1
-  #define WITH_UNIX 1
-  #undef WITH_ABSTRACT_UNIXSOCKET
-  #define WITH_IP4 1
-  #define WITH_IP6 1
-  #define WITH_RAWIP 1
-  #define WITH_GENERICSOCKET 1
-  #undef WITH_INTERFACE
-  #define WITH_TCP 1
-  #define WITH_UDP 1
-  #undef WITH_SCTP
-  #undef WITH_DCCP
-  #undef WITH_UDPLITE
-  #define WITH_LISTEN 1
-  #undef WITH_POSIXMQ
-  #define WITH_SOCKS4 1
-  #define WITH_SOCKS4A 1
-  #define WITH_SOCKS5 1
-  #undef WITH_VSOCK
-  #undef WITH_NAMESPACES
-  #define WITH_PROXY 1
-  #define WITH_SYSTEM 1
-  #define WITH_SHELL 1
-  #define WITH_EXEC 1
-  #define WITH_READLINE 1
-  #undef WITH_TUN
-  #define WITH_PTY 1
-  #define WITH_OPENSSL 1
-  #undef WITH_FIPS
-  #define WITH_LIBWRAP 1
-  #define WITH_SYCLS 1
-  #define WITH_FILAN 1
-  #define WITH_RETRY 1
-  #undef WITH_DEVTESTS
-  #define WITH_MSGLEVEL 0 /*debug*/
-  #define WITH_DEFAULT_IPV 4
-```
-## 4. **Addendum**
+---
 
-From the Mugane's comment :
+### **Étape 4 : Vérifier que `socat` fonctionne**
 
-May also want to add that it is best to use Powershell (as Admin) to install these packages for cygwin if using cyg-get :
+1. **Vérifie la version de `socat`** :
+   - Tape la commande suivante pour vérifier que `socat` a bien été compilé et installé :
+     ```bash
+     socat -V
+     ```
+   - Cela devrait afficher la version de `socat`.
 
-```bash
-cyg-get gcc-g++ gcc-core make gcc-fortran gcc-objc gcc-objc++ libkrb5-devel libkrb5_3 libreadline-devel libssl-devel libwrap-devel tcp_wrappers
-```
+2. **Teste `socat`** :
+   - Tu peux tester `socat` en créant un simple relais TCP. Par exemple :
+     ```bash
+     socat TCP-LISTEN:8080,fork TCP:example.com:80
+     ```
+   - Cela écoutera sur le port 8080 de ton ordinateur et redirigera le trafic vers `example.com` sur le port 80.
 
-If you don't use powershell, and try to install from cygwin itself (even as Administrator) you may run into gnarly cryptic missing dll errors and end up needing to remove/reinstall cygwin itself to correct the problems.
+---
 
-If users don't have cygwin, I recommend [chocolatey](https://chocolatey.org/install) (again from Powershell as admin) :
+### **Étape 5 : Ajouter `socat` au PATH (Optionnel)**
 
-```bash
-choco install -y cygwin cyg-get
-```
+Si tu as compilé `socat` mais ne l'as pas installé avec `make install`, tu peux ajouter le fichier binaire `socat` à ton PATH manuellement.
+
+1. **Trouve le fichier `socat`** :
+   - Après la compilation, le fichier `socat` se trouve dans le dossier `socat` (là où tu as exécuté `make`).
+
+2. **Ajoute-le au PATH** :
+   - Copie le fichier `socat` dans un répertoire inclus dans ton PATH, par exemple :
+     ```bash
+     cp socat /usr/local/bin/
+     ```
+
+---
+
+### **Résumé des Étapes**
+1. Installe les outils de compilation dans Cygwin (`gcc`, `make`, etc.).
+2. Télécharge le code source de `socat` avec `git clone`.
+3. Configure et compile `socat` avec `./configure` et `make`.
+4. Installe `socat` avec `make install` (optionnel).
+5. Vérifie que `socat` fonctionne avec `socat -V`.
+
+---
+
+### **Avantages de compiler `socat`**
+- Tu obtiens la dernière version du programme.
+- Tu peux personnaliser la compilation.
+- C'est une excellente façon d'apprendre à compiler des programmes sous Windows avec Cygwin
